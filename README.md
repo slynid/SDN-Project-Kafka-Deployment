@@ -1,12 +1,19 @@
 # SDN-Project-Kafka-Deployment
 
+## Developing Kafka deployment and publisher/consumer for ReST based services
+1. Deploy kafka
+
+2. Assume as application is exposing data using ReST services - for that any standard API available on open network can be used.
+
+3. There is a publisher that calls this ReST api to read the data (ensure that the ReST APIs are returning data in JSON Format) and put it on kafka topic using Java APIs.
+
+4. There are three consumers who are reading this data from this topic. i) one of them is printing it locally ii) Sending it using ReST apis to a remote applications. Iii) Storing the data in ElasticSerach DB.
+
+
+
 ## Steps to run
 
-1. Start zookeeper in one terminal.
-2. Start kafka in one terminal.
-3. Start elastic search in one terminal.
-4. Build the consumer module in one terminal.
-5. Build the producer module in one terminal. 
+
 
 
 Instruction for all the above steps is given below. 
