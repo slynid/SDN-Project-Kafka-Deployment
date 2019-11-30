@@ -51,7 +51,7 @@ After executing above command you will get output like this if it executes succe
 ```
 Created topic "CURRENCY_EXCHANGE_RATE".
 ```
-Now you can see the created topic on Kafka by runnin gthe list topic command:
+Now you can see the created topic on Kafka by running the list topic command:
 ```
 bin/kafka-topics.sh --list --zookeeper localhost:2181
 
@@ -62,9 +62,9 @@ After installing kafka come out from this directory or open new terminal with th
 ```
 cd ..
 ```
-**2. Install Elasticsearch**<br>
+ **3. Install Elasticsearch**<br>
 
-### Download the archive
+*Download the archive*<br>
 ```bash
 $ wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.zip
 ```
@@ -73,16 +73,7 @@ $ unzip elasticsearch-0.90.7.zip
 ```
 
 *Configuration files*<br>
-If installed from the zip, configuration files are found in the config folder of the resulting directory.
-
-In either case, there will be two main configuration files: elasticsearch.yml and logging.yml. The first configures the Elasticsearch server settings, and the latter, unsurprisingly, the logger settings used by Elasticsearch.
-
-“elasticsearch.yml” will, by default, contain nothing but comments.
-
-“logging.yml” provides configuration for basic logging. You can find the resulting logs in /var/log/elasticsearch.
-
-### Remove Elasticsearch Public Access
-Before continuing, you will want to configure Elasticsearch so it is not accessible to the public Internet–Elasticsearch has no built-in security and can be controlled by anyone who can access the HTTP API. This can be done by editing elasticsearch.yml. Assuming you installed with the package, open the configuration with this command:
+Go to the config folder in elasticsearch-0.90.7 . Edit the file elasticsearch.yml
 
 ```bash
 sudo vi /etc/elasticsearch/elasticsearch.yml
@@ -96,22 +87,17 @@ Then insert the following line somewhere in the file, to disable dynamic scripts
 ```bash
 script.disable_dynamic: true
 ```
-Save and exit. Now restart Elasticsearch to put the changes into effect:
-```bash
-$ sudo service elasticsearch restart
-```
+Save and exit. 
 
 
-### 3.Test your Elasticsearch install
-You have now extracted the zip to a directory and have the Elasticsearch binaries available, and can start the server.Make sure you’re in the resulting directory. 
+Move out from the config directory and run
 
-Let’s ensure that everything is working. Run
 ```bash
 $ ./bin/elasticsearch
  ```
-Elasticsearch should now be running on port 9200. Do note that Elasticsearch takes some time to fully start, so running the curl command below immediately might fail. It shouldn’t take longer than ten seconds to start responding, so if the below command fails, something else is likely wrong.
+Elasticsearch should now be running on port 9200. Test elastic search using
 
-Ensure the server is started by running
+
 ```bash
 $ curl -X GET 'http://localhost:9200'
 ```
@@ -131,63 +117,6 @@ You should see the following response
   "tagline" : "You Know, for Search"
 }
 ```
-If you see a response similar to the one above, Elasticsearch is working properly. Alternatively, you can query your install of Elasticsearch from a browser by visiting :9200. You should see the same JSON as you saw when using curl above.
+If you see a response similar to the one above, Elasticsearch is working properly. Alternatively, you can query your install of Elasticsearch from a browser by visiting http://localhost:9200. 
 
-The server can be stopped using the RESTful API
-```bash
-$curl -X POST 'http://localhost:9200/_cluster/nodes/_local/_shutdown'
-```
-You can restart the server with the corresponding service elasticsearch start.
 
-### 4.Using Elasticsearch
-Elasticsearch is up and running. Now, we’ll go over some basic configuration and usage.
-
-### Basic configuration
-Configuration files are found in the config folder inside the resulting directory.The two configuration files you will find are elasticsearch.yml and logging.yml. The first is a general Elasticsearch configuration. The provided file contains nothing but comments, so default settings are used. None of the settings are necessary. You can work with Elasticsearch without doing any of the following, but it’ll be a raw development environment.
-
-The setting “cluster.name” is the method by which Elasticsearch provides auto-discovery. What this means is that if a group of Elasticsearch servers on the same network share the same cluster name, they will automatically discover each other. This is how simple it is to scale Elasticsearch, but be aware that if you keep the default cluster name and there are other Elasticsearch servers on your network that are not under your control, you are likely to wind up in a bad state.
-
-### Basic usage
-Let’s add some data to our Elasticsearch install. Elasticsearch uses a RESTful API, which responds to the usual CRUD commands: Create, Read, Update, and Destroy.
-
-To add an entry
-```bash
-$ curl -X POST 'http://localhost:9200/tutorial/helloworld/1' -d '{ "message": "Hello World!" }'
-```
-You should see the following response
-```
-{“ok”:true,“index”:“tutorial”,“type”:“helloworld”,“id”:“1”,“version”:1}
-```
-What we have done is send a HTTP POST request to the Elasticserach server. The URI of the request was /tutorial/helloworld/1. It’s important to understand the parameters here:
-
-“tutorial” is index of the data in Elasticsearch.
-“helloworld” is the type.
-“1” is the id of our entry under the above index and type.
-If you saw the response above to the curl command, we can now query for the data with
-
-```bash
-$ curl -X GET 'http://localhost:9200/tutorial/helloworld/1'
-```
-which should respond with
-```
-{"_index":"tutorial","_type":"helloworld","_id":"1","_version":1,"exists":true, "_source" : { "message": "Hello World!" }}
-Success! We’ve added to and queried data in Elasticsearch.
-```
-One thing to note is that we can get nicer output by appending ?pretty=true to the query. Let’s give this a try
-```bash
-curl -X GET 'http://localhost:9200/tutorial/helloworld/1?pretty=true'
-```
-Which should respond with
-```
-{
-  "_index" : "tutorial",
-  "_type" : "helloworld",
-  "_id" : "1",
-  "_version" : 1,
-  "exists" : true, "_source" : { "message": "Hello World!" }
-}
-```
-which is much more readable. The output will also be pretty printed without needing to append the query string if you have set format=yaml in the Elasticsearch configuration file.
-
-### Conclusion
-We have now installed, configured and begun using Elasticsearch. Since it responds to a basic RESTful API. It is now easy to begin adding to and querying data using Elasticsearch from your application.
