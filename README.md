@@ -11,102 +11,58 @@
 
 
 
-## Steps to run
+# Setup Instruction
+  **1. Clone this repository**
+  ```
+  cd SDN-Project-Kafka-Deployment
+  ```
+  **2. Install Apache kafka**<br>
+  *Prerequisites*<br>
+  System must have java installed otherwise install java using below command
+  ```
+  sudo apt update
+  sudo apt install default-jdk
+  ```
+  *Download Apache Kafka and extract it by using below command*
+  ```
+  wget http://www-us.apache.org/dist/kafka/2.2.1/kafka_2.12-2.2.1.tgz
 
+  tar xzf kafka_2.12-2.2.1.tgz
 
+  ```
+  *Start Kafka Server*<br>
+  Kafka uses ZooKeeper, so first, start a ZooKeeper server on your system. You can use the script available with Kafka to get start single-node ZooKeeper instance.
+  ```
+  cd kafka_2.12-2.2.1
 
+  bin/zookeeper-server-start.sh config/zookeeper.properties
+  ```
+  Now start the Kafka server:
 
-Instruction for all the above steps is given below. 
+  ```
+  bin/kafka-server-start.sh config/server.properties
+ ```
+ *Create a Topic in Kafka*
+ ```
+ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic CURRENCY_EXCHANGE_RATE
 
-
-
-
-
-
-
-
-
-
-
-
-
-## Install Apache kafka on ubuntu
-
-***Step 1:Pre-requisite***
-
-Apache Kafka required Java to run. You must have java installed on your system. Execute below command to install default      OpenJDK on your system from the official PPA’s.
-
-```sudo apt update
-$ sudo apt install default-jdk
 ```
-
-***Step 2 – Download Apache Kafka***
-
-Download the Apache Kafka binary files from its official download website. You can also select any nearby mirror to download.
-wget http://www-us.apache.org/dist/kafka/2.2.1/kafka_2.12-2.2.1.tgz
-Then extract the archive file
-tar xzf kafka_2.12-2.2.1.tgz
-mv kafka_2.12-2.2.1 /usr/local/kafka
-
-***Step 3 – Start Kafka Server***
-
-Kafka uses ZooKeeper, so first, start a ZooKeeper server on your system. You can use the script available with Kafka to get start single-node ZooKeeper instance.
-
-```bashcd 
-$ /usr/local/kafka
-$ bin/zookeeper-server-start.sh config/zookeeper.properties
+After executing above command you will get output like this if it executes successfully.
 ```
-
-Now start the Kafka server:
-```bash
-$ bin/kafka-server-start.sh config/server.properties
+Created topic "CURRENCY_EXCHANGE_RATE".
 ```
-
-***Step 4 – Create a Topic in Kafka***
-bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic testTopic
-The replication-factor describes how many copies of data will be created. As we are running with single instance keep this value 1.
-
-Set the partitions options as the number of brokers you want your data to be split between. As we are running with a single broker keep this value 1.
-
-Now you can see the created topic on Kafka by runnin gthe list topic command
-```bash
-$ bin/kafka-topics.sh --list --zookeeper localhost:2181
+Now you can see the created topic on Kafka by runnin gthe list topic command:
 ```
+bin/kafka-topics.sh --list --zookeeper localhost:2181
 
-***Step 5 – Send Messages to Kafka***
-The “producer” is the process responsible for put data into our Kafka. The Kafka comes with a command line client that will take input from a file or from standard input and send it out as messages to the Kafka cluster. The default Kafka send each line as a separate message.
 
-Let’s run the producer and then type a few messages into the console to send to the server.
-```bash
-$ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic testTopic
+CURRENCY_EXCHANGE_RATE
 ```
-You can exit this command or keep this terminal running for further testing. Now open a new terminal to the Kafka consumer process on next step.
-
-***Step 6 – Using Kafka Consumer***
-Kafka also has a command line consumer to read data from Kafka cluster and display messages to standard output.
-```bash
-$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic testTopic --from-beginning
+After installing kafka come out from this directory or open new terminal with this same repository folder
 ```
-
-
-
-
-## Install Elastic search on ubuntu
-### 1.Dependencies
-First, update the list of available packages by running apt-get update.
-Install the OpenJDK runtime supplied by Ubuntu.
-
-### OpenJDK
-To accomplish the first option, we can simply run apt-get install openjdk-6-jre.
-
-### Test your Java installation
-You can then check that Java is installed by running java -version.
-
-That’s all the dependencies we need for now, so let’s get started with obtaining and installing Elasticsearch.
-
-### 2.Download and Install
-Elasticsearch can be downloaded directly from their site in zip, tar.gz, deb, or rpm packages. You don’t need to do this ahead of time, as we will download the files that we need as we need them in the text below.
-
+cd ..
+```
+**2. Install Elasticsearch**<br>
 
 ### Download the archive
 ```bash
@@ -116,7 +72,7 @@ $ wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsea
 $ unzip elasticsearch-0.90.7.zip
 ```
 
-### Configuration files
+*Configuration files*<br>
 If installed from the zip, configuration files are found in the config folder of the resulting directory.
 
 In either case, there will be two main configuration files: elasticsearch.yml and logging.yml. The first configures the Elasticsearch server settings, and the latter, unsurprisingly, the logger settings used by Elasticsearch.
@@ -129,7 +85,7 @@ In either case, there will be two main configuration files: elasticsearch.yml an
 Before continuing, you will want to configure Elasticsearch so it is not accessible to the public Internet–Elasticsearch has no built-in security and can be controlled by anyone who can access the HTTP API. This can be done by editing elasticsearch.yml. Assuming you installed with the package, open the configuration with this command:
 
 ```bash
-$ sudo vi /etc/elasticsearch/elasticsearch.yml
+sudo vi /etc/elasticsearch/elasticsearch.yml
 ```
 
 Then find the line that specifies network.bind_host, then uncomment it and change the value to localhost so it looks like the following:
