@@ -150,6 +150,8 @@ Now you can run this application by using
 java -jar Kafka-Consumer-App.jar 
 ```
 
+open the log of consumer.
+
 
 **5. Producer Application**<br>
 Go To Spring-Boot-Kafka-Producer directory and build the application using maven and before building you need to change log file path wherever you want.
@@ -175,6 +177,8 @@ Now you can run this application by using
 ```
 java -jar Kafka-Producer-App.jar 
 ```
+
+open the log of producer.
 
 Once producer executes it start a scheculed task which will get data from a currency excahge api and push it to kafka broker 
 
