@@ -13,6 +13,11 @@
 
 # Setup Instruction
   **1. Clone this repository**
+
+  ```
+  git clone https://github.com/slynid/SDN-Project-Kafka-Deployment.git
+  ```
+
   ```
   cd SDN-Project-Kafka-Deployment
   ```
@@ -170,5 +175,26 @@ Now you can run this application by using
 ```
 java -jar Kafka-Producer-App.jar 
 ```
+
+Once producer executes it start a scheculed task which will get data from a currency excahge api and push it to kafka broker 
+
+All the three consumer's listining to this broker will immediately recieve this data and do their specific task's.
+
+for examale the third consumer in this application sending data to elasticsearch db.
+to check data successfully inserted to elasticsearch go to consumer three log
+and find this log message 
+
+
+```
+Message SEND to Elasticsearch :{ elasticsearch URL :: http://localhost:9200/currency_exchange_rate/USDTOINR/{id}/_create } | { id : 1575181948758 } Data Sent To Elasticsearch.
+```
+copy above id and replace it with <id> in below url 
+```
+http://localhost:9200/currency_exchange_rate/USDTOINR/<id>
+
+```
+
+open it with browser you can find data if it successfully inserted.
+
 
 
