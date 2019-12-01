@@ -120,3 +120,55 @@ You should see the following response
 If you see a response similar to the one above, Elasticsearch is working properly. Alternatively, you can query your install of Elasticsearch from a browser by visiting http://localhost:9200. 
 
 
+**4. Consumer Application**<br>
+Go To Spring-Boot-Kafka-Consumer directory and build the application using maven and before building you need to change log file path wherever you want.
+
+```
+cd Spring-Boot-Kafka-Consumer
+vim src/main/resources/logback-spring.xml
+```
+change logfile path 
+```
+   <file>your_log_file.log</file>
+   <fileNamePattern>your_log_file.%d{yyyy-MM-dd}.log</fileNamePattern>
+```
+build application usind below command
+```
+mvn clean install
+```
+after this you will get a folder of name *target* and under this folder you will find 
+*Kafka-Consumer-App.jar* this is final build for consumer application.
+
+
+Now you can run this application by using 
+```
+java -jar Kafka-Consumer-App.jar 
+```
+
+
+**5. Producer Application**<br>
+Go To Spring-Boot-Kafka-Producer directory and build the application using maven and before building you need to change log file path wherever you want.
+
+```
+cd Spring-Boot-Kafka-Producer
+vim src/main/resources/logback-spring.xml
+```
+change logfile path 
+```
+   <file>your_log_file.log</file>
+   <fileNamePattern>your_log_file.%d{yyyy-MM-dd}.log</fileNamePattern>
+```
+build application usind below command
+```
+mvn clean install
+```
+after this you will get a folder of name *target* and under this folder you will find 
+*Kafka-Producer-App.jar* this is final build for producer application.
+
+
+Now you can run this application by using 
+```
+java -jar Kafka-Producer-App.jar 
+```
+
+
